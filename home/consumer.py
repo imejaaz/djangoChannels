@@ -3,37 +3,41 @@ from channels.consumer import SyncConsumer, AsyncConsumer
 from asgiref.sync import async_to_sync
 import json
 
+
 class TestConsumer(SyncConsumer):
+    def websocket_connect(self, event):
 
-    def connect(self):
-        self.room_name = "test_consumer"
-        self.room_group_name = "test_consumer_group"
-        async_to_sync(self.channel_layer.group_.add)(
-            self.room_name, self.room_group_name
-        )
-        self.accept()
-        self.send(text_data = json.dumps({'status': 'First django channel connection has been established'}))
+        self.send({
+            "type": "websocket.accept",
+        })
+        print("connected...")
 
-    def receive(self):
-        print("receiver method")
+    def websocket_receive(self, event):
+        self.send({
+            "type": "websocket.send",
+            "text": json.dumps({
+                "message": event["text"],
+            }),
+        })
+        print('receiving data it now..............', event)
 
-    def disconnect(self):
-        print("disconnected method")
+    def websocket_disconnect(self, event):
+        print("about to diconnect now")
 
 
-class TestConsumera(AsyncJsonWebsocketConsumer):
 
-    async def connect(self):
-        self.room_name = "test_consumer"
-        self.room_group_name = "test_consumer_group"
-        async_to_sync(self.channel_layer.group_.add)(
-            self.room_name, self.room_group_name
-        )
-        self.accept()
-        self.send(text_data = json.dumps({'status': 'First django channel connection has been established'}))
+class TestConsumera(AsyncConsumer):
 
-    async def receive(self):
-        print("receiver method")
+    def connect(self, event):
+        print("connected ..........cc", event)
+        
 
-    async def disconnect(self):
+    def receive(self, event):
+        print("receiver method", event)
+
+    def disconnect(self, event):
+        print("disconnected method.............", event)
+
+
+
         print("disconnected method")
