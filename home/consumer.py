@@ -1,43 +1,83 @@
-from channels.generic.websocket import WebsocketConsumer, AsyncJsonWebsocketConsumer
-from channels.consumer import SyncConsumer, AsyncConsumer
-from asgiref.sync import async_to_sync
+from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 import json
 
 
-class TestConsumer(SyncConsumer):
-    def websocket_connect(self, event):
 
-        self.send({
-            "type": "websocket.accept",
-        })
-        print("connected...")
+
+import asyncio
+
+class MyAsyncConsumer(AsyncWebsocketConsumer):
+    async def websocket_connect(self, event):
+        # Explicitly accept the WebSocket connection
+        await self.accept()
+        print("Connected...")
+
+        # Start the loop to send messages
+        await self.send_messages_loop()
+
+    async def send_messages_loop(self):
+        while True:
+            await asyncio.sleep(1)  # Adjust the delay as needed
+            await self.send(text_data=json.dumps({
+                "type": "websocket.send",
+                "text": "Message from the server.",
+            }))
+
+    async def websocket_receive(self, event):
+        print('Receiving data now:', event)
+        await self.send(text_data=json.dumps({
+                "type": "websocket.send",
+                "text": "Message from the server.",
+            }))
+
+    async def websocket_disconnect(self, event):
+        print("About to disconnect now")
+
+
+
+# class MyAsyncConsumer(AsyncWebsocketConsumer):
+#     async def websocket_connect(self, event):
+
+#         await self.accept()
+
+    
+#         await self.send(text_data=json.dumps({
+#             "type": "websocket.send",
+#             "text": "Connection accepted.",
+#         }))
+#         print("Connected...")
+
+#     async def websocket_receive(self, event):
+#         # Handle received messages here
+#         await self.send(text_data=json.dumps({
+#             "type": "websocket.send",
+#             "text": event["text"],
+#         }))
+#         print('Receiving data now:', event)
+
+#     async def websocket_disconnect(self, event):
+#         print("About to disconnect now")
+
+
+
+
+
+
+
+
+class MySyncConsumer(WebsocketConsumer):
+    def websocket_connect(self, event):
+        self.accept()
+        self.send(text_data=json.dumps({
+            "message": "Connection accepted.",
+        }))
+        print("Connected...")
 
     def websocket_receive(self, event):
-        self.send({
-            "type": "websocket.send",
-            "text": json.dumps({
-                "message": event["text"],
-            }),
-        })
-        print('receiving data it now..............', event)
+        self.send(text_data=json.dumps({
+            "message": event["text"],
+        }))
+        print('Receiving data now:', event)
 
     def websocket_disconnect(self, event):
-        print("about to diconnect now")
-
-
-
-class TestConsumera(AsyncConsumer):
-
-    def connect(self, event):
-        print("connected ..........cc", event)
-        
-
-    def receive(self, event):
-        print("receiver method", event)
-
-    def disconnect(self, event):
-        print("disconnected method.............", event)
-
-
-
-        print("disconnected method")
+        print("About to disconnect now")

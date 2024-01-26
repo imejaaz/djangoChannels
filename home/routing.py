@@ -4,7 +4,7 @@ from . import consumer
 
 
 websocket_urlpatterns=[
-    path('ws/sc/', consumer.TestConsumer.as_asgi()),
-    path('ws/sca/', consumer.TestConsumera.as_asgi()),
+    path('ws/asc/', consumer.MyAsyncConsumer.as_asgi()),
+    path('ws/sc/', consumer.MySyncConsumer.as_asgi()),
 
 ]
