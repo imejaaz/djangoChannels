@@ -1,9 +1,5 @@
 from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 import json
-
-
-
-
 import asyncio
 
 class MyAsyncConsumer(AsyncWebsocketConsumer):
@@ -32,32 +28,6 @@ class MyAsyncConsumer(AsyncWebsocketConsumer):
 
     async def websocket_disconnect(self, event):
         print("About to disconnect now")
-
-
-
-# class MyAsyncConsumer(AsyncWebsocketConsumer):
-#     async def websocket_connect(self, event):
-
-#         await self.accept()
-
-    
-#         await self.send(text_data=json.dumps({
-#             "type": "websocket.send",
-#             "text": "Connection accepted.",
-#         }))
-#         print("Connected...")
-
-#     async def websocket_receive(self, event):
-#         # Handle received messages here
-#         await self.send(text_data=json.dumps({
-#             "type": "websocket.send",
-#             "text": event["text"],
-#         }))
-#         print('Receiving data now:', event)
-
-#     async def websocket_disconnect(self, event):
-#         print("About to disconnect now")
-
 
 
 

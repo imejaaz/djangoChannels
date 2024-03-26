@@ -1,10 +1,9 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from home import routing 
+# from . import home
 
 urlpatterns = [
-    # Your other URL patterns
+    path('', include('home.urls'))
 ]
 
-# application = routing.home
