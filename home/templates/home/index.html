@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Django Channels</title>
+</head>
+<body>
+    <h1>Django Channels code is being written</h1>
+
+
+    <script>
+
+        var ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/')
+
+        ws.onopen = function () {
+            console.log('connection is open now for communication');
+            message.send('Hi,  i am client browser sending this message to you')
+        }
+
+
+        ws.onmessage = function (event) {
+            console.log('messages receive', event.data);
+        }
+
+        ws.onerror = function (error) {
+            console.log('websocekt error', error);
+        }
+
+        ws.onclose = function () {
+            console.log('connection is closed ')
+        }
+
+
+    </script>
+
+
+</body>
+</html>
