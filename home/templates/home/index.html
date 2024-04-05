@@ -7,20 +7,23 @@
 </head>
 <body>
     <h1>Django Channels code is being written</h1>
-
+    <h3 id="st"> starting... <h3/>
 
     <script>
 
-        var ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/')
+        { var ws = new WebSocket('ws://127.0.0.1:8000/ws/asc/')
 
         ws.onopen = function () {
             console.log('connection is open now for communication');
-            message.send('Hi,  i am client browser sending this message to you')
+            message.send('Hi,  i am client browser sending this message to you');
         }
 
 
         ws.onmessage = function (event) {
-            console.log('messages receive', event.data);
+            var message = JSON.parse(event.data);
+            var text = message.text;
+            console.log('Message received:', text);
+            document.getElementById("st").innerText = text;
         }
 
         ws.onerror = function (error) {
@@ -28,8 +31,30 @@
         }
 
         ws.onclose = function () {
-            console.log('connection is closed ')
+            console.log('connection is closed ', event)
         }
+        
+        }
+
+
+     {/* ws.addEventListener('open', (event) => { */}
+            // console.log("Connection is ready for communication");
+    //     });
+
+        
+    // ws.addEventListener('message', (message) => {
+    //         console.log("messages are receiving");
+    //     });
+
+    // ws.addEventListener('close', (event) => {
+    //         console.log("Connection is closed");
+    //     });
+
+    // ws.addEventListener('error', (event) => {
+    //         console.log("some error occured");
+    //     });
+
+
 
 
     </script>

@@ -14,11 +14,11 @@ class MyAsyncConsumer(AsyncWebsocketConsumer):
         await self.send_messages_loop()
 
     async def send_messages_loop(self):
-        while True:
+        for i in range(8):
+            ++i
             await asyncio.sleep(1)  # Adjust the delay as needed
             await self.send(text_data=json.dumps({
-                "type": "websocket.send",
-                "text": "Message from the server.",
+                "text":str(i),
             }))
 
     async def websocket_receive(self, event):
@@ -44,9 +44,10 @@ class MySyncConsumer(WebsocketConsumer):
         print("Connected...")
 
     def websocket_receive(self, event):
-        self.send(text_data=json.dumps({
+        for i in range (5):
+            self.send(text_data=json.dumps({
             "message": event["text"],
-        }))
+            }))
         print('Receiving data now:', event)
 
     def websocket_disconnect(self, event):
